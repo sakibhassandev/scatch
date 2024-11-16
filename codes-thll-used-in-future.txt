@@ -1,0 +1,34 @@
+// Error Flash
+
+<% if(error.length>0){ %>
+<div class="absolute top-5 left-1/2 -translate-x-1/2 -translate-y-1/2 p-3 rounded-md bg-red-500">
+    <span class="inline-block mt-1 mb-1 text-white">
+        <%= error %>
+    </span>
+</div>
+<% } %>
+
+// Shop
+<% products.forEach(function(product){ %>
+   <div class="w-60">
+      <div class="w-full h-52 flex items-center justify-center bg-[<%= product.bgcolor %>]">
+         <img class="h-[12rem]" src="data:image/jpeg;base64,<%= product.image.toString('base64') %>" alt="">
+      </div>
+     <div class="flex justify-between bg-[<%= product.panelcolor %>] items-center px-4 py-4 text-[<%= product.textcolor %>]">
+        <div>
+          <h3> <%= product.name %> </h3>
+          <h4>₹ <%= product.price %></h4>
+       </div>
+       <a class="w-7 h-7 flex items-center justify-center rounded-full bg-white" href="">
+         <i class="ri-add-line"></i>
+       </a>
+     </div>
+   </div>
+<% }) %>
+
+
+// Things to do:
+
+1. Login admin account and checks only admin can go /admin route
+2. Create Products from admin panel
+3. Show Products
