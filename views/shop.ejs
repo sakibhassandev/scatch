@@ -21,26 +21,26 @@
             <a class="block w-fit mb-2" href="">Discount</a>
         </div>
     </div>
-    <div class="w-[75%] flex flex-col gap-5 h-screen">
-        <div class="flex items-start gap-5">
+    <div class="w-[75%] flex flex-wrap gap-5 h-screen">
+        <% products.forEach(function(product){%>
+        <div class="flex items-start h-max gap-5">
             <div class="w-60">
-                <div class="w-full h-52 flex items-center justify-center bg-blue-500">
-                    <img class="h-[12rem]" src="" alt="">
+                <div class="w-full h-52 flex items-center justify-center bg-[<%= product.bgcolor %>]">
+                    <img class="h-[12rem]" src="data:image/jpeg;base64,<%= product.image.toString('base64') %>" alt="">
                 </div>
-                <div class="flex justify-between bg-green-500 items-center px-4 py-4 text-white">
+                <div
+                    class="flex justify-between items-center px-4 py-4 bg-[<%= product.panelcolor %>] text-[<%= product.textcolor %>]">
                     <div>
-                        <h3>
-                            Name
-                        </h3>
-                        <h4>₹ Price
-                        </h4>
+                        <h3><%= product.name %></h3>
+                        <h4>৳ <%= product.price %></h4>
                     </div>
-                    <a class="w-7 h-7 flex items-center justify-center rounded-full bg-blue-500" href="">
+                    <a class="w-7 h-7 flex items-center justify-center rounded-full bg-white" href="">
                         <i class="ri-add-line"></i>
                     </a>
                 </div>
             </div>
         </div>
+        <%}) %>
     </div>
 </div>
 <%- include('./partials/footer') %>

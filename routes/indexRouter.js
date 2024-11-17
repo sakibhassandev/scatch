@@ -1,8 +1,8 @@
 import express from "express";
 const router = express.Router();
-import jwt from "jsonwebtoken";
 
 import { isLoggedIn } from "../middlewares/isLoggedIn.js";
+import { productModel } from "../models/product.js";
 
 router.get("/", (req, res) => {
   if (req.cookies.token) {
@@ -12,8 +12,9 @@ router.get("/", (req, res) => {
   res.render("index", { error });
 });
 
-router.get("/shop", isLoggedIn, (req, res) => {
-  res.render("shop");
+router.get("/shop", isLoggedIn, async (req, res) => {
+  const products = await productModel.find();
+  res.render("shop", { products });
 });
 
 export default router;

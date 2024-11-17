@@ -3,6 +3,7 @@ const router = express.Router();
 
 import bcrypt from "bcrypt";
 import { ownerModel } from "../models/owner.js";
+import { productModel } from "../models/product.js";
 
 // creating a new owner
 if (process.env.NODE_ENV === "development") {
@@ -32,6 +33,16 @@ if (process.env.NODE_ENV === "development") {
 
 router.get("/", (req, res) => {
   res.status(200).send("hey its working");
+});
+
+router.get("/admin", async (req, res) => {
+  const products = await productModel.find();
+  const success = req.flash("success");
+  res.render("admin", { success, products });
+});
+
+router.get("/create", (req, res) => {
+  res.render("createproducts");
 });
 
 export default router;

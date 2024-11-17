@@ -8,7 +8,10 @@ export const registerUser = async (req, res) => {
     const { fullName, email, password } = req.body;
 
     let user = await userModel.findOne({ email });
-    if (user) return res.status(406).send("User already exists");
+    if (user) {
+      req.flash("error", "User already exists please login");
+      return res.status(406).redirect("/");
+    }
 
     bcrypt.genSalt(10, (err, salt) => {
       if (err) return res.status(500).send(err.message);
@@ -22,7 +25,7 @@ export const registerUser = async (req, res) => {
 
         const token = generateToken(user);
         res.cookie("token", token);
-        res.status(201).send(user);
+        res.status(201).redirect("/shop");
       });
     });
   } catch (error) {
@@ -46,7 +49,7 @@ export const loginUser = async (req, res) => {
       }
       const token = generateToken(user);
       res.cookie("token", token);
-      res.status(200).send(user);
+      res.status(200).redirect("/shop");
     });
   } catch (error) {
     res.status(500).send(error.message);
