@@ -1,4 +1,5 @@
 import { userModel } from "../models/user.js";
+import { ownerModel } from "../models/owner.js";
 
 import bcrypt from "bcrypt";
 import { generateToken } from "../utils/generateToken.js";
@@ -62,5 +63,42 @@ export const logoutUser = async (req, res) => {
     res.redirect("/");
   } catch (error) {
     res.status(500).send(error.message);
+  }
+};
+
+export const loginOwner = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    const owner = await ownerModel.findOne({ email });
+    if (!owner) {
+      req.flash("error", "Invalid credentials");
+      return res.redirect("/owners/login");
+    }
+    bcrypt.compare(password, owner.password, (err, result) => {
+      if (err) {
+        req.flash("error", "Something went wrong");
+        return res.status(500).redirect("/owners/login");
+      }
+      if (!result) {
+        req.flash("error", "Invalid credentials");
+        return res.status(401).redirect("/owners/login");
+      }
+      const token = generateToken(owner);
+      res.cookie("owner", token);
+      res.redirect("/owners/admin");
+    });
+  } catch (error) {
+    req.flash("error", "Something went wrong");
+    return res.status(500).redirect("/owners/login");
+  }
+};
+
+export const logoutOwner = async (req, res) => {
+  try {
+    res.cookie("owner", "");
+    res.redirect("/owners/login");
+  } catch (error) {
+    req.flash("error", "Something went wrong");
+    return res.status(500).redirect("/owners/login");
   }
 };
